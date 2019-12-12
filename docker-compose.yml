@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 
 volumes:
   alertmanager:
@@ -117,5 +117,17 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
+    networks:
+      - back-tier
+
+  demo:
+    container_name: demo
+    build: ./demo
+    restart: always
+    links:
+      - prometheus:prometheus
+    ports:
+      - 8001:8001
+      - 8002:8002
     networks:
       - back-tier

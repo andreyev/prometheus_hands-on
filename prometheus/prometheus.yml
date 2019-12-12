@@ -1,6 +1,6 @@
 # my global config
 global:
-  scrape_interval:     10s # By default, scrape targets every 15 seconds.
+  scrape_interval:     5s # By default, scrape targets every 15 seconds.
   evaluation_interval: 10s # By default, scrape targets every 15 seconds.
   # scrape_timeout is set to the global default (10s).
 
@@ -23,6 +23,10 @@ scrape_configs:
   - job_name: 'notebook'
     static_configs:
     - targets: [ 'node-exporter:9100']
+
+  - job_name: 'demo'
+    static_configs:
+    - targets: [ 'demo:8001']
 
   - job_name: 'blackbox_http_2xx'
     metrics_path: /probe
