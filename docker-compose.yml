@@ -68,4 +68,16 @@ services:
       - 9093:9093
     networks:
       - back-tier
-  
+
+  pushgateway:
+    container_name: pushgateway
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    restart: on-failure:5
+    image: prom/pushgateway    
+    ports:
+      - 9091:9091
+    networks:
+      - back-tier
