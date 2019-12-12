@@ -28,3 +28,23 @@ services:
       - 9090:9090
     networks:
       - back-tier
+
+  node-exporter:
+    container_name: node-exporter
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    restart: on-failure:5
+    image: prom/node-exporter
+    volumes:
+      - /proc:/host/proc
+      - /sys:/host/sysfs
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sysfs'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    expose:
+      - 9100
+    networks:
+      - back-tier

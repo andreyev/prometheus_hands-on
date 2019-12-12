@@ -11,6 +11,11 @@ global:
 # Here it's Prometheus itself.
 
 scrape_configs:
+
   - job_name: 'prometheus'
     static_configs:
-         - targets: [ 'prometheus:9090', ]
+    - targets: [ 'prometheus:9090']
+
+  - job_name: 'notebook'
+    static_configs:
+    - targets: [ 'node-exporter:9100']
