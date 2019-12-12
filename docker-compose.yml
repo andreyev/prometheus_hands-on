@@ -1,0 +1,30 @@
+version: '3.7'
+
+volumes:
+  prometheus:
+
+networks:
+  back-tier:
+    driver: bridge
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    restart: on-failure:5
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus:/prometheus
+    command:
+      - '--storage.tsdb.path=/prometheus'
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=30d'
+      - '--storage.tsdb.retention.size=10GB'
+    ports:
+      - 9090:9090
+    networks:
+      - back-tier
