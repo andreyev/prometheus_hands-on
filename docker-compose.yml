@@ -2,6 +2,7 @@ version: '3.7'
 
 volumes:
   alertmanager:
+  grafana:
   prometheus:
 
 networks:
@@ -83,13 +84,12 @@ services:
       - back-tier
 
   blackbox:
-
     container_name: blackbox
     restart: always
     logging:
       driver: "json-file"
       options:
-        max-size: 200m
+        max-size: 500m
     image: prom/blackbox-exporter:latest
     volumes:
       - ./blackbox:/config
@@ -97,5 +97,25 @@ services:
       - '--config.file=/config/blackbox.yml'
     ports:
       - 9115:9115
+    networks:
+      - back-tier
+
+  grafana:
+    container_name: grafana
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    image: grafana/grafana
+    links:
+      - prometheus:prometheus
+    volumes:
+      - grafana:/var/lib/grafana
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
     networks:
       - back-tier
