@@ -1,0 +1,9 @@
+route:
+  receiver: 'default'
+  group_wait: 10s
+
+receivers:
+  - name: 'default'
+    webhook_configs:
+      - send_resolved: false
+        url: 'https://requestb.in/1n5615m1'
