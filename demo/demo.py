@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding:utf-8
+'''Exemplo de instrumentação do Prometheus.'''
 
 import http.server
 import random
@@ -14,14 +15,17 @@ EXCEPTIONS = Counter('demo_exceptions_count', 'Exceptions serving Demo.')
 LAST = Gauge('demo_last_time_seconds', 'The last time a Demo was served.')
 
 class MyHandler(http.server.BaseHTTPRequestHandler):
-    def do_GET(self):
+    '''Classe de exemplo.'''
+
+    def do_get(self):
+        '''Função com todos os exemplos propostos.'''
         rand = random.randrange(10)
         time.sleep(rand)
         SUM.inc(rand)
         REQUESTS.inc()
         with EXCEPTIONS.count_exceptions():
-          if random.random() < 0.2:
-            raise Exception
+            if random.random() < 0.2:
+                raise Exception
         self.send_response(200)
         self.end_headers()
         self.wfile.write(bytes("Hello World (after %ss)" % rand, "utf-8"))
@@ -29,5 +33,5 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     start_http_server(8001)
-    server = http.server.HTTPServer(('', 8002), MyHandler)
-    server.serve_forever()
+    SERVER = http.server.HTTPServer(('', 8002), MyHandler)
+    SERVER.serve_forever()
