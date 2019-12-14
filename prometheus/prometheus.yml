@@ -8,6 +8,12 @@ global:
   # external systems (federation, remote storage, Alertmanager).
 
 
+alerting:
+  alertmanagers:
+  - scheme: http
+    static_configs:
+    - targets: ['alertmanager:9093']
+
 rule_files:
   - 'alert.conf'
 
