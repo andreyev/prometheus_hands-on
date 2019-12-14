@@ -17,7 +17,7 @@ LAST = Gauge('demo_last_time_seconds', 'The last time a Demo was served.')
 class MyHandler(http.server.BaseHTTPRequestHandler):
     '''Classe de exemplo.'''
 
-    def do_get(self):
+    def do_GET(self):
         '''Função com todos os exemplos propostos.'''
         rand = random.randrange(10)
         time.sleep(rand)
