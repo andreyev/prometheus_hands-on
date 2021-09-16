@@ -32,9 +32,8 @@ scrape_configs:
     metrics_path: /probe
     params:
       module: [http_2xx]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://prometheus.io
+    http_sd_configs:
+      - url: 'https://gist.githubusercontent.com/andreyev/1e82bc5786460858303cea9b8ae7ff47/raw/d8b734f9a099d89579d453c14e975f7b162e9530/test.json'
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
