@@ -11,8 +11,15 @@ global:
 rule_files:
   - 'alert.conf'
 
- # A scrape configuration containing exactly one endpoint to scrape:
+# A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
+
+# Alerting specifies settings related to the Alertmanager
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - alertmanager:9093
 
 scrape_configs:
 
