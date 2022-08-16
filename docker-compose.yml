@@ -70,6 +70,7 @@ services:
       - back-tier
   
   flask_webserver:
+    build: ./test_tools/
     container_name: flask_webserver
     logging:
       driver: "json-file"
