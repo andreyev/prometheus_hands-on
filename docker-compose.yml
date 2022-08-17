@@ -69,12 +69,28 @@ services:
     networks:
       - back-tier
 
+  flask_webserver:
+    build: ./test_tools/
+    container_name: flask_webserver
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    restart: on-failure:5
+    image: andredeo/flask_webserver:1.0.0
+    ports:
+     - 8000:8000
+    networks:
+      - back-tier
+
   pushgateway:
     container_name: pushgateway
     logging:
       driver: "json-file"
       options:
         max-size: 500m
+    command:
+      - '--web.enable-admin-api'
     restart: on-failure:5
     image: prom/pushgateway    
     ports:
@@ -83,7 +99,6 @@ services:
       - back-tier
 
   blackbox:
-
     container_name: blackbox
     restart: always
     logging:
