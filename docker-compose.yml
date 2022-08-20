@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 volumes:
   alertmanager:
@@ -70,6 +70,20 @@ services:
     networks:
       - back-tier
 
+  flask_webserver:
+    build: ./test_tools/
+    container_name: flask_webserver
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    restart: on-failure:5
+    image: andredeo/flask_webserver:1.0.0
+    ports:
+     - 8000:8000
+    networks:
+      - back-tier
+
   pushgateway:
     container_name: pushgateway
     logging:
@@ -117,12 +131,13 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=camptocamp-prometheus-alertmanager-datasource
     networks:
       - back-tier
 
   demo:
     container_name: demo
-    build: ./demo
+    build: ./demo/
     restart: always
     links:
       - prometheus:prometheus

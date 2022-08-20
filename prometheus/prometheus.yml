@@ -4,18 +4,21 @@ global:
   evaluation_interval: 10s # By default, scrape targets every 15 seconds.
   # scrape_timeout is set to the global default (10s).
 
-  # Attach these labels to any time series or alerts when communicating with
-  # external systems (federation, remote storage, Alertmanager).
-
-
+# Attach these labels to any time series or alerts when communicating with
+# external systems (federation, remote storage, Alertmanager).
 rule_files:
   - 'alert.conf'
 
- # A scrape configuration containing exactly one endpoint to scrape:
+# Alerting specifies settings related to the Alertmanager
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - alertmanager:9093
+
+# A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
-
 scrape_configs:
-
   - job_name: 'prometheus'
     static_configs:
     - targets: [ 'prometheus:9090']
@@ -23,6 +26,18 @@ scrape_configs:
   - job_name: 'notebook'
     static_configs:
     - targets: [ 'node-exporter:9100']
+
+  - job_name: 'pushgateway'
+    static_configs:
+    - targets: [ 'pushgateway:9091']
+
+  - job_name: 'alertmanager'
+    static_configs:
+    - targets: [ 'alertmanager:9093']
+
+  - job_name: 'grafana'
+    static_configs:
+    - targets: [ 'grafana:3000']
 
   - job_name: 'demo'
     static_configs:
@@ -35,6 +50,60 @@ scrape_configs:
     static_configs:
       - targets:
         - https://prometheus.io
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115  # The blackbox exporter's real hostname:port.
+
+  - job_name: 'job 1'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Look for a HTTP 200 response.
+    static_configs:
+      - targets:
+        - https://www.google.com
+        - http://www.deo.com
+        - https://www.google.com/aa
+        - http://www.eu.com.br
+        - http://www.voce.com.br
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115  # The blackbox exporter's real hostname:port.
+
+  - job_name: 'job 2'
+    metrics_path: /probe
+    params:
+      module: [https_2xx]  # Look for a HTTPS 200 response.
+    static_configs:
+      - targets:
+        - https://www.zabbixa.com
+        - https://www.youtube.com
+        - https://www.andredeo.com.br
+        - https://www.youtube.com/bb
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox:9115  # The blackbox exporter's real hostname:port.
+ 
+  - job_name: 'job 3'
+    metrics_path: /probe
+    params:
+      module: [demo]  # Look for a HTTPS 200 response.
+    static_configs:
+      - targets:
+        - https://soundcloud.net
+        - https://kubernetes.io/
+        - https://www.cncf.io/
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
