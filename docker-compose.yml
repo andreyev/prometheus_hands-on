@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 volumes:
   alertmanager:
@@ -10,19 +10,6 @@ networks:
     driver: bridge
 
 services:
-  nginx:
-    image: nginx
-    container_name: nginx
-    logging:
-      driver: "json-file"
-      options:
-        max-size: 500m
-    restart: on-failure:5
-    ports:
-      - 80:8080
-    networks:
-      - back-tier
-
   prometheus:
     image: prom/prometheus
     container_name: prometheus
@@ -44,6 +31,71 @@ services:
     networks:
       - back-tier
 
+  node-exporter:
+    container_name: node-exporter
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    restart: on-failure:5
+    image: prom/node-exporter
+    volumes:
+      - /proc:/host/proc
+      - /sys:/host/sysfs
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sysfs'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    ports:
+      - 9100:9100
+    networks:
+      - back-tier
+
+  alertmanager:
+    container_name: alertmanager
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    restart: on-failure:5
+    image: prom/alertmanager
+    volumes:
+      - alertmanager:/alertmanager
+      - ./alertmanager/config.yml:/etc/alertmanager/config.yml
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+    ports:
+      - 9093:9093
+    networks:
+      - back-tier
+
+  test_tools:
+    build: ./test_tools/
+    container_name: test_tools
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    restart: on-failure:5
+    image: test_tools:1.0.0
+    ports:
+     - 8000:8000
+    networks:
+      - back-tier
+
+  pushgateway:
+    container_name: pushgateway
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    restart: on-failure:5
+    image: prom/pushgateway    
+    ports:
+      - 9091:9091
+    networks:
+      - back-tier
   blackbox:
     container_name: blackbox
     restart: always
@@ -58,5 +110,65 @@ services:
       - '--config.file=/config/blackbox.yml'
     ports:
       - 9115:9115
+    networks:
+      - back-tier
+
+  grafana:
+    container_name: grafana
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    image: grafana/grafana
+    links:
+      - prometheus:prometheus
+    volumes:
+      - grafana:/var/lib/grafana
+    ports:
+      - 3000:3000
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=camptocamp-prometheus-alertmanager-datasource
+    networks:
+      - back-tier
+
+  demo:
+    container_name: demo
+    build: ./demo/
+    restart: always
+    links:
+      - prometheus:prometheus
+    ports:
+      - 8001:8001
+      - 8002:8002
+    networks:
+      - back-tier
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    restart: on-failure:5
+    ports:
+      - 80:8080
+    networks:
+      - back-tier
+
+  local_server:
+    build: ./local_server/
+    container_name: local_server
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    restart: on-failure:5
+    image: local_server:1.0.0
+    ports:
+     - 8003:8003
     networks:
       - back-tier
