@@ -1,6 +1,8 @@
 # my global config
 global:
   scrape_interval:     5s # By default, scrape targets every 15 seconds.
+  # How often Prometheus will evaluate rules.
+  # Prometheus uses rules to create new time series and to generate alerts.
   evaluation_interval: 10s # By default, scrape targets every 15 seconds.
   # scrape_timeout is set to the global default (10s).
 
