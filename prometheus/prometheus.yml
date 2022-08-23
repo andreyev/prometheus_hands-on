@@ -9,7 +9,6 @@ global:
 
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
-
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
