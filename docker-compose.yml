@@ -84,7 +84,7 @@ services:
       - back-tier
 
   pushgateway:
-    image: prom/pushgateway:v1.4.3
+    container_name: pushgateway
     logging:
       driver: "json-file"
       options:
@@ -92,6 +92,7 @@ services:
     command:
       - '--web.enable-admin-api'
     restart: on-failure:5
+    image: prom/pushgateway:v1.4.3
     ports:
       - 9091:9091
     networks:
@@ -104,7 +105,7 @@ services:
       driver: "json-file"
       options:
         max-size: 200m
-    image: prom/blackbox-exporter:latest
+    image: prom/blackbox-exporter:v0.22.0
     volumes:
       - ./blackbox:/config
     command:
