@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -21,12 +24,12 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 6,
-  "iteration": 1660834281730,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
     {
+      "datasource": {},
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -34,6 +37,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -89,10 +94,12 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -101,10 +108,12 @@
             "type": "prometheus",
             "uid": "Enp4JQmVk"
           },
+          "editorMode": "code",
           "exemplar": true,
           "expr": "probe_http_status_code{instance=\"$instance\"}",
           "interval": "",
           "legendFormat": "",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -112,7 +121,7 @@
       "type": "timeseries"
     }
   ],
-  "schemaVersion": 34,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -120,8 +129,12 @@
       {
         "current": {
           "selected": true,
-          "text": "https://www.google.com",
-          "value": "https://www.google.com"
+          "text": "http://www.deo.com",
+          "value": "http://www.deo.com"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "r8SoxNZVz"
         },
         "definition": "probe_http_status_code",
         "description": "",
@@ -145,6 +158,10 @@
           "selected": false,
           "text": "job 1",
           "value": "job 1"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "r8SoxNZVz"
         },
         "definition": "probe_http_status_code{instance=\"$instance\"}",
         "hide": 0,
@@ -172,6 +189,6 @@
   "timezone": "",
   "title": "HTTP Status Code",
   "uid": "ExMNTXiVk",
-  "version": 4,
+  "version": 2,
   "weekStart": ""
 }

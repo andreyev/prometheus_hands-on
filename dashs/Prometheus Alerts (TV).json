@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -23,11 +26,15 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 8010,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "r8SoxNZVz"
+      },
       "gridPos": {
         "h": 2,
         "w": 24,
@@ -39,14 +46,23 @@
         "content": "<div style=\"width: 100%; background-color:#482462; padding: 1px 0; text-align: center;\">\n<span style=\"font-size: 30px; color:#d35210;\"><b>Alerts</b> </span>\n</div>\n\n\n",
         "mode": "html"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "9.1.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "r8SoxNZVz"
+          },
+          "refId": "A"
+        }
+      ],
       "transparent": true,
       "type": "text"
     },
     {
       "datasource": {
         "type": "camptocamp-prometheus-alertmanager-datasource",
-        "uid": "aYbJcumVz"
+        "uid": "d62lbHWVz"
       },
       "fieldConfig": {
         "defaults": {
@@ -99,14 +115,15 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "9.1.1",
       "targets": [
         {
           "datasource": {
             "type": "camptocamp-prometheus-alertmanager-datasource",
-            "uid": "aYbJcumVz"
+            "uid": "d62lbHWVz"
           },
           "filters": "severity=\"critical\"",
+          "receiver": "",
           "refId": "A"
         }
       ],
@@ -117,7 +134,7 @@
     {
       "datasource": {
         "type": "camptocamp-prometheus-alertmanager-datasource",
-        "uid": "aYbJcumVz"
+        "uid": "d62lbHWVz"
       },
       "fieldConfig": {
         "defaults": {
@@ -170,12 +187,12 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "9.1.1",
       "targets": [
         {
           "datasource": {
             "type": "camptocamp-prometheus-alertmanager-datasource",
-            "uid": "aYbJcumVz"
+            "uid": "d62lbHWVz"
           },
           "filters": "severity=\"high\"",
           "refId": "A"
@@ -188,7 +205,7 @@
     {
       "datasource": {
         "type": "camptocamp-prometheus-alertmanager-datasource",
-        "uid": "aYbJcumVz"
+        "uid": "d62lbHWVz"
       },
       "fieldConfig": {
         "defaults": {
@@ -241,12 +258,12 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "9.1.1",
       "targets": [
         {
           "datasource": {
             "type": "camptocamp-prometheus-alertmanager-datasource",
-            "uid": "aYbJcumVz"
+            "uid": "d62lbHWVz"
           },
           "filters": "severity=\"warning\"",
           "refId": "A"
@@ -260,7 +277,7 @@
       "columns": [],
       "datasource": {
         "type": "camptocamp-prometheus-alertmanager-datasource",
-        "uid": "aYbJcumVz"
+        "uid": "d62lbHWVz"
       },
       "fontSize": "80%",
       "gridPos": {
@@ -408,7 +425,7 @@
         {
           "datasource": {
             "type": "camptocamp-prometheus-alertmanager-datasource",
-            "uid": "aYbJcumVz"
+            "uid": "d62lbHWVz"
           },
           "refId": "A"
         }
@@ -419,7 +436,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 34,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [
     "tv",
@@ -463,6 +480,6 @@
   "timezone": "",
   "title": "Prometheus Alerts  (TV) - NEW",
   "uid": "EScdNXlWk",
-  "version": 8,
+  "version": 3,
   "weekStart": ""
 }
