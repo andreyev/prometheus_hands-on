@@ -26,7 +26,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 8010,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 5,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -61,8 +61,8 @@
     },
     {
       "datasource": {
-        "type": "camptocamp-prometheus-alertmanager-datasource",
-        "uid": "d62lbHWVz"
+        "type": "prometheus",
+        "uid": "T7wNypW4z"
       },
       "fieldConfig": {
         "defaults": {
@@ -108,7 +108,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "count"
+            "last"
           ],
           "fields": "",
           "values": false
@@ -122,7 +122,15 @@
             "type": "camptocamp-prometheus-alertmanager-datasource",
             "uid": "d62lbHWVz"
           },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count(ALERTS{severity=\"critical\"})",
           "filters": "severity=\"critical\"",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "__auto",
+          "range": false,
           "receiver": "",
           "refId": "A"
         }
@@ -133,9 +141,10 @@
     },
     {
       "datasource": {
-        "type": "camptocamp-prometheus-alertmanager-datasource",
-        "uid": "d62lbHWVz"
+        "type": "prometheus",
+        "uid": "T7wNypW4z"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
@@ -180,7 +189,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "count"
+            "last"
           ],
           "fields": "",
           "values": false
@@ -194,7 +203,14 @@
             "type": "camptocamp-prometheus-alertmanager-datasource",
             "uid": "d62lbHWVz"
           },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "count(ALERTS{severity=\"high\"})",
           "filters": "severity=\"high\"",
+          "format": "table",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -204,8 +220,8 @@
     },
     {
       "datasource": {
-        "type": "camptocamp-prometheus-alertmanager-datasource",
-        "uid": "d62lbHWVz"
+        "type": "prometheus",
+        "uid": "T7wNypW4z"
       },
       "fieldConfig": {
         "defaults": {
@@ -251,7 +267,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "count"
+            "last"
           ],
           "fields": "",
           "values": false
@@ -265,7 +281,12 @@
             "type": "camptocamp-prometheus-alertmanager-datasource",
             "uid": "d62lbHWVz"
           },
+          "editorMode": "code",
+          "expr": "count(ALERTS{severity=\"warning\"})",
           "filters": "severity=\"warning\"",
+          "format": "table",
+          "legendFormat": "__auto",
+          "range": true,
           "refId": "A"
         }
       ],
@@ -274,12 +295,196 @@
       "type": "stat"
     },
     {
-      "columns": [],
       "datasource": {
-        "type": "camptocamp-prometheus-alertmanager-datasource",
-        "uid": "d62lbHWVz"
+        "type": "prometheus",
+        "uid": "T7wNypW4z"
       },
-      "fontSize": "80%",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Time"
+              },
+              {
+                "id": "unit",
+                "value": "time: YYYY-MM-DD HH:mm:ss"
+              },
+              {
+                "id": "custom.align"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "severity"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "custom.align"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "rgba(47, 48, 47, 0.97)",
+                      "value": null
+                    },
+                    {
+                      "color": "#4a2564",
+                      "value": 3
+                    },
+                    {
+                      "color": "#58140c",
+                      "value": 4
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "group"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "env"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "instance_id"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "job"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "summary"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align"
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 10,
         "w": 24,
@@ -288,151 +493,44 @@
       },
       "id": 4,
       "links": [],
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": true
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
       },
-      "styles": [
-        {
-          "alias": "Time",
-          "align": "auto",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "pattern": "Time",
-          "type": "date"
-        },
-        {
-          "alias": "",
-          "align": "auto",
-          "colorMode": "row",
-          "colors": [
-            "rgba(47, 48, 47, 0.97)",
-            "#4a2564",
-            "#58140c"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "severity",
-          "thresholds": [
-            "3",
-            "4"
-          ],
-          "type": "string",
-          "unit": "short",
-          "valueMaps": [
-            {
-              "text": "info",
-              "value": "1"
-            },
-            {
-              "text": "warning",
-              "value": "2"
-            },
-            {
-              "text": "high",
-              "value": "3"
-            },
-            {
-              "text": "critical",
-              "value": "4"
-            }
-          ]
-        },
-        {
-          "alias": "",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "group",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        },
-        {
-          "alias": "",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "env",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        },
-        {
-          "alias": "",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "instance_id",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        },
-        {
-          "alias": "",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "job",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        },
-        {
-          "alias": "",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "summary",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        }
-      ],
+      "pluginVersion": "9.1.1",
       "targets": [
         {
           "datasource": {
             "type": "camptocamp-prometheus-alertmanager-datasource",
             "uid": "d62lbHWVz"
           },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "ALERTS",
+          "format": "table",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "__auto",
+          "range": false,
           "refId": "A"
         }
       ],
       "title": "Most Critical Alerts",
-      "transform": "table",
-      "type": "table-old"
+      "transformations": [
+        {
+          "id": "seriesToRows",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "type": "table"
     }
   ],
   "refresh": "",
@@ -449,8 +547,8 @@
     "list": []
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "now-6h",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -480,6 +578,6 @@
   "timezone": "",
   "title": "Prometheus Alerts  (TV) - NEW",
   "uid": "EScdNXlWk",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
