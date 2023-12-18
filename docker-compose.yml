@@ -10,7 +10,7 @@ networks:
 
 services:
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v2.38.0
     container_name: prometheus
     logging:
       driver: "json-file"
@@ -37,7 +37,7 @@ services:
       options:
         max-size: 500m
     restart: on-failure:5
-    image: prom/node-exporter
+    image: prom/node-exporter:v1.3.1
     volumes:
       - /proc:/host/proc
       - /sys:/host/sysfs
@@ -57,7 +57,7 @@ services:
       options:
         max-size: 500m
     restart: on-failure:5
-    image: prom/alertmanager
+    image: prom/alertmanager:v0.24.0
     volumes:
       - alertmanager:/alertmanager
       - ./alertmanager/config.yml:/etc/alertmanager/config.yml
@@ -69,28 +69,43 @@ services:
     networks:
       - back-tier
 
+  flask_webserver:
+    build: ./test_tools/
+    container_name: flask_webserver
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 500m
+    restart: on-failure:5
+    image: andredeo/flask_webserver:1.0.0
+    ports:
+     - 8000:8000
+    networks:
+      - back-tier
+
   pushgateway:
     container_name: pushgateway
     logging:
       driver: "json-file"
       options:
         max-size: 500m
+    command:
+      - '--web.enable-admin-api'
     restart: on-failure:5
-    image: prom/pushgateway    
+    image: prom/pushgateway:v1.4.3
     ports:
       - 9091:9091
     networks:
       - back-tier
 
   blackbox:
-
     container_name: blackbox
     restart: always
     logging:
       driver: "json-file"
       options:
         max-size: 200m
-    image: prom/blackbox-exporter:latest
+    image: prom/blackbox-exporter:v0.22.0
     volumes:
       - ./blackbox:/config
     command:
