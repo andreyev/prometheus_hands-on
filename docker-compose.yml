@@ -1,0 +1,103 @@
+version: '3.7'
+
+volumes:
+  alertmanager:
+  grafana:
+  prometheus:
+
+networks:
+  back-tier:
+    driver: bridge
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+    command:
+      - '--storage.tsdb.path=/prometheus'
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - 9090:9090
+    networks:
+      - back-tier
+
+  node-exporter:
+    container_name: node-exporter
+    image: prom/node-exporter
+    depends_on:
+      - prometheus
+    volumes:
+      - /proc:/host/proc
+      - /sys:/host/sysfs
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sysfs'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    ports:
+      - 9100:9100
+    networks:
+      - back-tier
+
+  alertmanager:
+    container_name: alertmanager
+    image: prom/alertmanager
+    volumes:
+      - ./alertmanager/config.yml:/etc/alertmanager/config.yml
+    depends_on:
+      - prometheus
+      - node-exporter
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+    ports:
+      - 9093:9093
+    networks:
+      - back-tier
+
+  pushgateway:
+    container_name: pushgateway
+    image: prom/pushgateway
+    depends_on:
+      - prometheus
+      - node-exporter
+      - alertmanager
+    ports:
+      - 9091:9091
+    networks:
+      - back-tier
+
+  blackbox:
+    container_name: blackbox
+    image: prom/blackbox-exporter
+    volumes:
+      - ./blackbox:/config
+    command:
+      - '--config.file=/config/blackbox.yml'
+    depends_on:
+      - prometheus
+      - node-exporter
+      - alertmanager
+      - pushgateway
+    ports:
+      - 9115:9115
+    networks:
+      - back-tier
+
+  demo:
+    container_name: demo
+    build: ./demo/
+    links:
+      - prometheus:prometheus
+    depends_on:
+      - prometheus
+      - node-exporter
+      - alertmanager
+      - pushgateway
+      - blackbox
+    ports:
+      - 8001:8001
+      - 8002:8002
+    networks:
+      - back-tier

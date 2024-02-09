@@ -1,0 +1,15 @@
+route:
+  receiver: 'default'
+  routes:
+  - match:
+      alertname: healthchecks watchdog
+    receiver: healthchecks.io
+    group_wait: 0s
+    group_interval: 1m
+    repeat_interval: 6m
+
+receivers:
+  - name: 'default'
+  - name: healthchecks.io
+    webhook_configs:
+    - url: https://hc-ping.com/840c3490-a705-4f23-801b-43462657752e
