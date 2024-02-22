@@ -15,6 +15,7 @@ services:
     container_name: prometheus
     volumes:
       - ./prometheus/:/etc/prometheus/
+      - prometheus:/prometheus
     command:
       - '--storage.tsdb.path=/prometheus'
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -44,6 +45,7 @@ services:
     container_name: alertmanager
     image: prom/alertmanager
     volumes:
+      - alertmanager:/etc/alertmanager
       - ./alertmanager/config.yml:/etc/alertmanager/config.yml
     depends_on:
       - prometheus
