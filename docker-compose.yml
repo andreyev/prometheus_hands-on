@@ -101,3 +101,19 @@ services:
       - 8002:8002
     networks:
       - back-tier
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana-oss
+    links:
+      - prometheus:prometheus
+    depends_on:
+      - prometheus
+      - node-exporter
+      - demo
+    volumes:
+      - grafana:/var/lib/grafana
+    ports:
+      - 3000:3000
+    networks:
+      - back-tier
